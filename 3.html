@@ -5,11 +5,14 @@
 		<title>Содержание</title>
 		<link rel="preconnect" href="https://fonts.gstatic.com">
 		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+		<script src="https://kit.fontawesome.com/95c76cd070.js" crossorigin="anonymous"></script>
 		<style>
 			* {
 				margin: 0;
 				box-sizing: border-box;
 				font-family: 'Montserrat', sans-serif;
+				transition-property: color, background-color;
+				transition-duration: 0.65s;
 			}
 			
 			body {
@@ -147,8 +150,8 @@
 				
 			}
 			
-			header ul li img {
-				width: 20px;
+			header ul li a i {
+				font-size: 20px;
 			}
 			
 			header ul li {
@@ -157,11 +160,6 @@
 				margin: 20px;
 				color: white;
 				
-			}
-			
-			header ul li:active {
-				position: relative;
-				top: 2px;
 			}
 			
 			.user1_image, .user2_image, .user3_image {
@@ -264,6 +262,71 @@
 			  z-index: 100; 
 			  cursor: pointer; 
 			}
+			
+			.flipswitch {
+			  position: relative;
+			  width: 63px;
+			}
+			.flipswitch input[type=checkbox] {
+			  display: none;
+			}
+			.flipswitch-label {
+			  display: block;
+			  overflow: hidden;
+			  cursor: pointer;
+			  border: 0px solid #999999;
+			  border-radius: 50px;
+			}
+			.flipswitch-inner {
+			  width: 200%;
+			  margin-left: -100%;
+			  transition: margin 0.3s ease-in 0s;
+			}
+			.flipswitch-inner:before, .flipswitch-inner:after {
+			  float: left;
+			  width: 50%;
+			  height: 20px;
+			  padding: 0;
+			  line-height: 20px;
+			  font-size: 9px;
+			  color: white;
+			  font-family: Montserrat, Arial, sans-serif;
+			  font-weight: bold;
+			  box-sizing: border-box;
+			}
+			.flipswitch-inner:before {
+			  content: "DARK";
+			  padding-left: 6px;
+			  background-color: #363636;
+			  color: #FFFFFF;
+			}
+			.flipswitch-inner:after {
+			  content: "LIGHT";
+			  padding-right: 6px;
+			  background-color: #EBEBEB;
+			  color: #888888;
+			  text-align: right;
+			}
+			.flipswitch-switch {
+			  width: 24px;
+			  margin: -2px;
+			  background: #666666;
+			  border: 0px solid #999999;
+			  border-radius: 50px;
+			  position: absolute;
+			  top: 0;
+			  bottom: 0;
+			  right: 41px;
+			  transition: all 0.3s ease-in 0s;
+			}
+			.flipswitch-cb:checked + .flipswitch-label .flipswitch-inner {
+			  margin-left: 0;
+			}
+			.flipswitch-cb:checked + .flipswitch-label .flipswitch-switch {
+			  right: 0;
+			}
+			
+			
 		</style>
 	</head>
 	<body>
@@ -277,9 +340,18 @@
 				<li><a href="">Editorial</a></li>
 			</ul>
 			<ul>
-				<li><a href="https://twitter.com" target="_blank"><img src="twitter.svg"></a></li>
-				<li><a href="https://instagram.com" target="_blank"><img src="instagram.svg"></a></li>
-				<li><a href="https://facebook.com" target="_blank"><img src="facebook.svg"></a></li>
+				<li class="links"><a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a></li>
+				<li class="links"><a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a></li>
+				<li class="links"><a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+				<li>
+					<div class="flipswitch">
+					<input type="checkbox" name="flipswitch" class="flipswitch-cb" id="fs" checked>
+					<label class="flipswitch-label" for="fs">
+						<div class="flipswitch-inner"></div>
+						<div class="flipswitch-switch"></div>
+					</label>
+				</div>
+				</li>
 			</ul>
 		</header>
 		<a id="home"></a>
@@ -382,7 +454,26 @@
 			var bullet = document.getElementsByClassName('bullet');
 			
 			var backgrounds = ['first.jpg', 'second.jpg', 'third.jpg', 'fourth.webp', 'fifth.jpg'];
-			const anchors = document.querySelectorAll('a[href*="#"]')
+			const anchors = document.querySelectorAll('a[href*="#"]');
+			
+			var checkBox = document.querySelector('.flipswitch-cb');
+			
+			var title = document.querySelectorAll('.title');
+			var contentPara = document.querySelectorAll('.content p');
+			var buttonText = document.querySelectorAll('.button');
+			var menuText = document.querySelectorAll('header ul li');
+			var mainInfoText = document.querySelectorAll('.main_info *');
+			var links = document.querySelectorAll('a');
+			var about = document.querySelectorAll('.about');
+			var jobs = document.querySelectorAll('.jobs');
+			var aboutContentText = document.querySelectorAll('.about_content p');
+			var jobsArticleText = document.querySelectorAll('.jobs article p');
+			
+			var h1Background = document.querySelectorAll('h1');
+			var underBackground = document.querySelectorAll('.under');
+			var contentBackground = document.querySelectorAll('.content');
+			var headerBackground = document.querySelectorAll('header');
+			var mainInfoBackground = document.querySelectorAll('.main_info');
 			
 			for (let anchor of anchors) {
 			  anchor.addEventListener('click', function (e) {
@@ -476,6 +567,125 @@
 				bullet[i].style.fill = '#2f2f2f';
 			}
 			
+			function darkMode() {
+				for (n=0; n < title.length || n < contentPara.length || n < buttonText.length || n < menuText.length || n < mainInfoText.length || 
+				n < links.length || n < about.length || n < jobs.length || n < aboutContentText.length || n < jobsArticleText.length || 
+				n < h1Background.length || n < underBackground.length || n < contentBackground.length || n < headerBackground.length || n < mainInfoBackground.length; n++) {
+					if (n < title.length){
+						title[n].style.color = 'white';
+					}
+					if (n < contentPara.length) {
+						contentPara[n].style.color = 'lightgray';
+					}
+					if (n < buttonText.length) {
+						buttonText[n].style.color = 'lightgray';
+					}
+					if (n < menuText.length) {
+						menuText[n].style.color = 'white';
+					}
+					if (n < mainInfoText.length) {
+						mainInfoText[n].style.color = 'white';
+					}
+					if (n < links.length) {
+						links[n].style.color = 'white';
+					}
+					if (n < about.length) {
+						about[n].style.color = 'white';
+						about[n].style.backgroundColor = '#525252';
+					}
+					if (n < jobs.length) {
+						jobs[n].style.color = 'white';
+						jobs[n].style.backgroundColor = '#2f2f2f';
+					}
+					if (n < aboutContentText.length) {
+						aboutContentText[n].style.color = '#e6e6e6';
+					}
+					if (n < jobsArticleText.length) {
+						jobsArticleText[n].style.color = 'lightgray';
+					}
+					
+					if (n < h1Background.length) {
+						h1Background[n].style.backgroundColor = 'rgba(0,0,0,0.3)';
+					}
+					if (n < underBackground.length) {
+						underBackground[n].style.backgroundColor = 'rgba(0,0,0,0.3)';
+					}
+					if (n < contentBackground.length) {
+						contentBackground[n].style.backgroundColor = 'rgba(0,0,0,0.3)';
+					}
+					if (n < headerBackground.length) {
+						headerBackground[n].style.backgroundColor = 'rgba(0,0,0,0.3)';
+					}
+					if (n < mainInfoBackground.length) {
+						mainInfoBackground[n].style.backgroundColor = '#2f2f2f';
+					}
+				}
+			}
+			
+			function lightMode() {
+				for (n=0; n < title.length || n < contentPara.length || n < buttonText.length || n < menuText.length || n < mainInfoText.length || 
+				n < links.length || n < about.length || n < jobs.length || n < aboutContentText.length || n < jobsArticleText.length || 
+				n < h1Background.length || n < underBackground.length || n < contentBackground.length || n < headerBackground.length || n < mainInfoBackground.length; n++) {
+					if (n < title.length){
+						title[n].style.color = 'white';
+					}
+					if (n < contentPara.length) {
+						contentPara[n].style.color = 'white';
+					}
+					if (n < buttonText.length) {
+						buttonText[n].style.color = 'white';
+					}
+					if (n < menuText.length) {
+						menuText[n].style.color = '#525252';
+					}
+					if (n < mainInfoText.length) {
+						mainInfoText[n].style.color = '#525252';
+					}
+					if (n < links.length) {
+						links[n].style.color = '#525252';
+					}
+					if (n < about.length) {
+						about[n].style.color = '#525252';
+						about[n].style.backgroundColor = 'white';
+					}
+					if (n < jobs.length) {
+						jobs[n].style.color = '#525252';
+						jobs[n].style.backgroundColor = '#dbdbdb';
+					}
+					if (n < aboutContentText.length) {
+						aboutContentText[n].style.color = '#242424';
+					}
+					if (n < jobsArticleText.length) {
+						jobsArticleText[n].style.color = '#242424';
+					}
+					
+					if (n < h1Background.length) {
+						h1Background[n].style.backgroundColor = 'rgba(255,255,255,0.3)';
+					}
+					if (n < underBackground.length) {
+						underBackground[n].style.backgroundColor = 'rgba(255,255,255,0.3)';
+					}
+					if (n < contentBackground.length) {
+						contentBackground[n].style.backgroundColor = 'rgba(255,255,255,0.3)';
+					}
+					if (n < headerBackground.length) {
+						headerBackground[n].style.backgroundColor = 'rgba(255,255,255,0.8)';
+					}
+					if (n < mainInfoBackground.length) {
+						mainInfoBackground[n].style.backgroundColor = '#dbdbdb';
+					}
+				}
+			}
+			
+			checkBox.onchange = handleChange;
+			
+			function handleChange(checkBox) {
+				if (this.checked == true) {
+					darkMode();
+				} else if (this.checked == false) {
+					lightMode();
+				}
+			}
 			
 		</script>
 	</body>
